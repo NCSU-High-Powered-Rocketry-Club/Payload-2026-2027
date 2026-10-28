@@ -1,44 +1,27 @@
-# Payload Data Processing Template
+# Payload 2026-2027
 
-A template for Python-based payload projects. Our [AirbrakesV2](https://github.com/NCSU-High-Powered-Rocketry-Club/AirbrakesV2) project as well as our [Payload-2025-2026](https://github.com/NCSU-High-Powered-Rocketry-Club/Payload-2025-2026) and [Payload-2024-2025](https://github.com/NCSU-High-Powered-Rocketry-Club/Payload-2024-2025) projects used this design.
+ROS 2 Jazzy workspace (Ubuntu 24.04).
 
-## Installation
+| Package | Purpose |
+|---|---|
+| `payload_drivetrain` | `drivetrain_node`: subscribes to `/joy`, computes arcade drive (motor output is a TODO stub) |
+| `payload_bringup` | Launch file + params; starts `joy_node` (Xbox controller) and the drivetrain |
 
-This project uses [uv](https://github.com/astral-sh/uv) for fast Python package management.
+## Build and run
 
-1. Clone the repository.
-2. Sync the dependencies:
-   ```bash
-   uv sync
-   ```
-
-## Usage
-
-### 1. Real Flight Mode
-How to run the code on the flight computer.
 ```bash
-uv run real
+rosdep install --from-paths src --ignore-src -y
+colcon build --symlink-install
+source install/setup.bash
+ros2 launch payload_bringup bringup.launch.py
 ```
 
-### 2. Mock Replay Mode
-Replays log flight data. 
+## Dev tooling
+
+uv is used only for dev tooling (ruff); ROS dependencies come from rosdep/apt.
+
 ```bash
-uv run mock path/to/data.csv
+uv sync
+uv run ruff check . && uv run ruff format .
+colcon test --packages-select payload_drivetrain
 ```
-
-**Optional Flags:**
-* `-f` or `--fast-replay`: Run the replay at maximum speed instead of real-time.
-* `-l` or `--keep-log-file`: Keep the log file after the replay stops.
-
-### 3. Pretend Replay Mode
-Replays log flight data specifically from `.frm` files. You need to have a FIRM connected to do this.
-```bash
-uv run pretend path/to/data.frm
-```
-
-## Project Structure
-
-* **`payload/main.py`**: The application entry points (`run_real_flight`, `run_mock_flight`, `run_pretend_flight`).
-* **`payload/context.py`**: The core state machine and orchestrator.
-* **`payload/data_processor.py`**: High-level numerical processing (altitude zeroing, vertical velocity integration).
-* **`payload/state.py`**: The state machine states.
