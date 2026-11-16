@@ -28,16 +28,16 @@ class DrivetrainNode(Node):
             "max_speed", 800
         ).value
 
-        # Initialize the Motoron.
-        self._mc = motoron.MotoronI2C()
-        self._mc.reinitialize()
-        self._mc.disable_crc()
-        self._mc.clear_reset_flag()
+        # Initialize the motor controllers
+        self._left_mc = motoron.MotoronI2C(bus=1, address=0x10)
+        self._right_mc = motoron.MotoronI2C(bus=3, address=0x10)
 
-        # Configure acceleration and deceleration.
-        for motor in (1, 2):
-            self._mc.set_max_acceleration(motor, 200)
-            self._mc.set_max_deceleration(motor, 300)
+        for mc in (self._left_mc, self._right_mc):
+            mc.reinitialize()
+            mc.disable_crc()
+            mc.clear_reset_flag()
+            mc.set_max_acceleration(1, 200)
+            mc.set_max_deceleration(1, 300)
 
         self._last_joy_time = None
         self._joy_timeout = 0.5
@@ -79,8 +79,10 @@ class DrivetrainNode(Node):
         left_speed = round(left * self._max_speed)
         right_speed = round(right * self._max_speed)
 
-        self._mc.set_speed(1, left_speed)
-        self._mc.set_speed(2, right_speed)
+        self._left_mc.set_speed(1, left_speed)
+        self._left_mc.set_speed(2, right_speed)
+        self._right_mc.set_speed(1, left_speed)
+        self._right_mc.set_speed(2, right_speed)
 
         self.get_logger().debug(
             f"left={left_speed} right={right_speed}"
