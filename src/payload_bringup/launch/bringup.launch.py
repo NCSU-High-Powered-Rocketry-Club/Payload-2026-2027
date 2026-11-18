@@ -11,9 +11,9 @@ def generate_launch_description() -> LaunchDescription:
     return LaunchDescription(
         [
             Node(
-                package="joy",
-                executable="joy_node",
-                name="joy_node",
+                package="joy_linux",
+                executable="joy_linux_node",
+                name="joy_linux_node",
                 parameters=[f"{config}/joy.yaml"],
             ),
             Node(
