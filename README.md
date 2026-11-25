@@ -4,8 +4,8 @@ ROS 2 Jazzy workspace (Ubuntu 24.04).
 
 | Package | Purpose |
 |---|---|
-| `payload_drivetrain` | `drivetrain_node`: subscribes to `/joy`, computes arcade drive (motor output is a TODO stub) |
-| `payload_bringup` | Launch file + params; starts `joy_node` (Xbox controller) and the drivetrain |
+| `rover_bringup` | Launch file + params; starts `joy__linux_node` (Xbox controller) and the drivetrain |
+| `rover_drivetrain` | `drivetrain_node`: subscribes to `/joy`, computes arcade drive (motor output is a TODO stub) |
 
 ## Build and run
 
