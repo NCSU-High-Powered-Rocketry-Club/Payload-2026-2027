@@ -1,13 +1,13 @@
 
 """Drivetrain node: joystick input to front and back Motoron controllers."""
 
-import motoron
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Joy
 
-from payload_drivetrain.arcade import arcade_drive
+from drivetrain.arcade import arcade_drive
 
+from . import motoron
 
 # ============================================================
 # MOTOR CONFIGURATION

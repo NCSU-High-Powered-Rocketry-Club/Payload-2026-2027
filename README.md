@@ -15,13 +15,3 @@ colcon build --symlink-install
 source install/setup.bash
 ros2 launch payload_bringup bringup.launch.py
 ```
-
-## Dev tooling
-
-uv is used only for dev tooling (ruff); ROS dependencies come from rosdep/apt.
-
-```bash
-uv sync
-uv run ruff check . && uv run ruff format .
-colcon test --packages-select payload_drivetrain
-```
